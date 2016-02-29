@@ -1,27 +1,57 @@
+//Global Variables Here
+var randomNum;
+var count;
 
-// $(document).ready(function(){
-	
-// 	/*--- Display information modal box ---*/
-//   	$(".what").click(function(){
-//     	$(".overlay").fadeIn(1000);
 
-//   	});
 
-//   	/*--- Hide information modal box ---*/
-//   	$("a.close").click(function(){
-//   		$(".overlay").fadeOut(1000);
-//   	});
 
-// });
+$(document).ready(function(){
+	newGame();
+	/*--- Display information modal box ---*/
+  	$(".what").click(function(){
+    	$(".overlay").fadeIn(1000);
+
+  	});
+
+  	/*--- Hide information modal box ---*/
+  	$("a.close").click(function(){
+  		$(".overlay").fadeOut(1000);
+  	});
+
+
+  	// 
+  	$("form").submit(function(){
+  		var input = $('#userGuess').val();
+  		$('#userGuess').val("");
+  		if(validation(input)){
+  			$('#feedback').text(coldOrHot(input));
+  			count++;
+  			$('#count').html(count);
+  			$('#guessList').append("<li>" + input + "</li>");
+  		}	
+
+
+  		return false; // tells the form not to submit it 
+  	});
+
+
+
+});
+
+
+
+
+
 
 
 // // When the page loads, JavaScript should start a new game. Since you'll need to be able to start a new game when the user clicks the "New Game" button, you'll want to create a newGame function that does everything necessary to start a new game.
 
 function newGame(){
-	//generate new number
-	// restart counter
-	//clear out feedback
-	//clear out <li> with guess
+	numberGenerator();
+	count = 0;
+	$('#count').html(count);
+	$('#feedback').html('Make Your Guess!');
+	$('#guessList').html("");
 	//
 
 }
@@ -30,36 +60,16 @@ function newGame(){
 
 // // When a new game starts, a secret number between 1 and 100 should be generated that the user will have to guess. You should write a named function that takes care of this. You should try to start a new game without refreshing or reloading the page.
 
+
 function numberGenerator(){
-	var randomNum = Math.floor((Math.random() * 100) + 1);
-    return randomNum;
+	randomNum = Math.floor((Math.random() * 100) + 1);
 }
 
-
-
-
-// // The user should get feedback about each guess – if it was too low, too high, or just right. This means that you'll need to write a named function that takes a user guess and determines which feedback to provide.
-
-
-
-
-function feedback(){
-	if(input < randomNum){ // how to I get their input answer? There are two inputs on the html and I only want the first one. 
-		return "too low!";
-	}
-	else if(input > randomNum){
-		return "too high!"
-	}
-	else{
-		return "just right!"
-	}
-
-}
 
 
 // // choose a range for cold, hot, very hot, very cold..
 
-function coldOrHot(){
+function coldOrHot(input){
 	if(input > randomNum + 10 || input < randomNum - 10){
 		return "Cold!";
 	}
@@ -79,7 +89,7 @@ function coldOrHot(){
 
 // // Feedback about the guess should appear in div#feedback. By default, when the page loads, the text in this field is set to "Make Your Guess!"
 
-$('#feedback').text(coldOrHot());
+
 
 
 
@@ -87,11 +97,9 @@ $('#feedback').text(coldOrHot());
 
 // The game should track how many guess the user has made. Feedback about this should appear in span#count (which defaults to 0, when the page loads).
 
-var count = 0;
 
-$('#count').on("click"(function (){
-	count++;
-}
+
+
 
 //for each time someone clicks  , the counter needs to go up 
 
@@ -109,12 +117,18 @@ $('#count').on("click"(function (){
 // You'll need to ensure that users provide valid inputs. Note that the guess text input field has the HTML 5 required flag set, so you won't have to worry about blank guesses being submitted (if the user submits a blank guess, they'll be prompted to supply an input). However, you will need to write code that ensures that the user has supplied a numeric input between 1 and 100.
 
 function validation(num){ // what is the paramenter for this? i'll say "num" for now
-	if(num === NaN){
-		prompt("Please Provide a Number");
+	if(isNaN(num)){
+		alert("Please Provide a Number");
+		return false; 
 	}
-	else(num < 1 || num > 100){
-		prompt("Please Provide a Number Between 1 and 100.")
+	else if(num < 1 || num > 100){
+		alert("Please Provide a Number Between 1 and 100.");
+		return false;
 	}
+	else{
+		return true;
+	}
+
 }
 
 
